@@ -3,6 +3,7 @@ package com.xinlan.tankman.main;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
 	// ÆÁÄ»¸ß¿í
@@ -43,7 +46,7 @@ public class GameScreen implements Screen {
 		
 		init();
 	}
-	Sprite bottomSprite;
+	
 	private void init(){
 		mSound = new GameSound(this);
 		mBackground = new Background(this);
@@ -71,6 +74,7 @@ public class GameScreen implements Screen {
 //				tank.bottomSprite.getY(), 0);
 	}
 
+	ShapeRenderer shapeRender = new ShapeRenderer();
 	public void draw(SpriteBatch batch) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);// ÇåÆÁ

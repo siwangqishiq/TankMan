@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -17,8 +19,11 @@ import com.xinlan.tankman.util.Common;
 
 public class Tank {
 	private GameScreen context;
+	public static final float pad=5;
 	public final int width = 50;
 	public final int height = 50;
+	public final int hit_width=40;
+	public final int hit_height=40;
 	public float x, y;
 	protected Sprite bottomSprite;
 	protected Sprite headSprite;
@@ -37,8 +42,8 @@ public class Tank {
 	private ArrayList<ParticleEffect> mParticleList;
 
 	public Rectangle tempRect = new Rectangle(0, 0, width, height);
+	public Rectangle hitRect = new Rectangle(pad, pad, hit_width, hit_height);
 	private Vector2 dirVector = new Vector2();
-	
 	private Music turnSound;
 	
 	public Tank(GameScreen context) {
@@ -81,6 +86,10 @@ public class Tank {
 
 		tempRect.x = origin_x;
 		tempRect.y = origin_y;
+		
+		hitRect.x = tempRect.x+pad;
+		hitRect.y = tempRect.y+pad;
+		
 		if (Common.overlapRectangles(tempRect,
 				context.mTiananmen.sprite.getBoundingRectangle())) {
 			dx = 0;

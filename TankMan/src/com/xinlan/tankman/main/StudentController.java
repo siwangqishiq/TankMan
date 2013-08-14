@@ -11,7 +11,7 @@ import com.xinlan.tankman.util.Common;
 public class StudentController {
 	public static final int CUBE_TEXTURE = 141;
 	public static final int MAX_NUM = 20;
-	private GameScreen context;
+	public GameScreen context;
 
 	protected LinkedList<Student> studentList = new LinkedList<Student>();
 	protected Texture texture;
@@ -57,13 +57,21 @@ public class StudentController {
 		}// end for
 		for (int i = 0; i < studentList.size(); i++) {
 			Student student = studentList.get(i);
-			if (student.state == Student.DEAD) {
+			if (student.state == Student.CAN_REMOVE) {
 				studentList.remove(student);
+				System.gc();
 			}
 		}// end for i
 		
 		if(studentList.size()<MAX_NUM){
 			//TODO add
+			Student student = null;
+			do{
+				student=new Student(this, Common.genRand(0, 6), Common.genRand(0, GameScreen.SCREEN_WIDTH),
+						Common.genRand(0, GameScreen.SCREEN_HEIGHT));
+			}while(Common.overlapRectangles(student.rect, context.mTiananmen.sprite.getBoundingRectangle())
+					||Common.overlapRectangles(student.rect, context.tank.tempRect));
+			studentList.add(student);
 		}
 	}
 

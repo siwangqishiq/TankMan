@@ -8,8 +8,9 @@ import com.xinlan.tankman.util.Common;
 public class Student {
 	public static final int DEAD = 0;
 	public static final int MOVE = 1;
+	public static final int CAN_REMOVE = 3;
 
-	private StudentController context;
+	public StudentController context;
 	private TextureRegion texture, textureDead;
 	public int state;
 	public float x, y;
@@ -17,17 +18,19 @@ public class Student {
 	public float width = 30;
 	public float height = 30;
 	public Rectangle rect = new Rectangle(0, 0, width, height);
+	private long dead_time;
 
-	public Student(StudentController context,int type,float init_x,float init_y) {
+	public Student(StudentController context, int type, float init_x,
+			float init_y) {
 		this.context = context;
 		textureDead = context.deadTexture;
-		
+
 		x = init_x;
 		y = init_y;
-		
+
 		state = MOVE;
-		
-		switch(type){
+
+		switch (type) {
 		case 0:
 			texture = context.face1Texture;
 			break;
@@ -48,18 +51,34 @@ public class Student {
 			break;
 		default:
 			texture = context.face1Texture;
-		}//end switch
+		}// end switch
 		rect.x = x;
 		rect.y = y;
 	}
 
 	public void logic(float delta) {
-		x+=(float)Common.genRand(0, 10)/20f;
-		y+=(float)Common.genRand(0, 5)/20f;
+		// x++;
+		if (state == DEAD) {
+			if (System.currentTimeMillis() - dead_time >= 5000) {
+				state = CAN_REMOVE;
+			}
+			return;
+		}
+
+		if (Common.overlapRectangles(context.context.tank.hitRect, rect)) {
+			state = DEAD;
+			
+			context.context.mSound.haulSound.play();
+			dead_time = System.currentTimeMillis();
+		}
 	}
 
 	public void draw(SpriteBatch batch) {
-		batch.draw(texture, x, y, width, height);
+		if (state == MOVE) {
+			batch.draw(texture, x, y, width, height);
+		} else if (state == DEAD) {
+			batch.draw(textureDead, x, y, width, height);
+		}
 	}
 
 	public void dispose() {
