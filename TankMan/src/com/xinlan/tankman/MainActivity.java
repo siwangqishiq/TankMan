@@ -7,11 +7,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-/**
- * ¿ÓµùµÄÍæÒâ¶ù
- * @author 13120682
- *
- */
 public class MainActivity extends AndroidApplication {
 
     @Override
